@@ -1,4 +1,4 @@
-package group25.SEP_Server;
+package group25.sep.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
