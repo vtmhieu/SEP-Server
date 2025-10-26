@@ -35,7 +35,7 @@ public class FinancialRequest {
 
     @Column(name = "currency", nullable = false, length = 3)
     @Builder.Default
-    private String currency = "USD";
+    private String currency = "SEK";
 
     @Column(name = "reason", columnDefinition = "TEXT", nullable = false)
     private String reason;
