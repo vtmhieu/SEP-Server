@@ -3,3 +3,11 @@ INSERT INTO EVENT (record_id, name, location, event_date, type, description, est
 INSERT INTO EVENT (record_id, name, location, event_date, type, description, estimate_budget, status, attendees, start_date, end_date) VALUES ('EV-2', 'AI Expo', 'Colombo', '2025-11-20', 'type1', 'AI and Data Science Exhibition', '200.0', 'PENDING', 10, '2025-10-28', '2025-10-30');
 
 INSERT INTO EVENT (record_id, name, location, event_date, type, description, estimate_budget, status, attendees, start_date, end_date) VALUES ('EV-3', 'Developer Meetup', 'Kandy', '2025-10-30', 'type1', 'Regional developer community meetup', '130.0', 'ACCEPTED', 10, '2025-10-28', '2025-10-30');
+
+INSERT INTO TASK (event_id, project_reference, description, assignee, subteam, comments, priority, status) VALUES ('1', 'Tech Summit 2025', 'Cater food for around 100-200 participants to have lunch during the summit', 'Mary', 'Food', 'Reasonable, no budget issues', 'HIGH', 'IN_PROGRESS');
+
+INSERT INTO TASK (event_id, project_reference, description, assignee, subteam, comments, priority, status) VALUES ('1', 'Tech Summit 2025', 'Be able to set up around 10 tables for seating during the lunch break', 'Adam', 'Food', 'Only have 6 tables currently in stock, will need to purchase more', 'MEDIUM', 'NEEDS_MANAGER_REVIEW');
+
+INSERT INTO TASK (event_id, project_reference, description, assignee, subteam, comments, priority, status) VALUES ('2', 'AI Expo', 'Set up the lighting/sound for all the booths at the expo', 'Sarah', 'Design', '', 'CRITICAL', 'CREATED');
+
+INSERT INTO TASK (event_id, project_reference, description, assignee, subteam, comments, priority, status) VALUES ('3', 'Developer Meetup', 'Have some small snacks on standby for developers who attend the meet', 'Brock', 'Food', 'Small task, easily doable', 'LOW', 'IN_PROGRESS');
