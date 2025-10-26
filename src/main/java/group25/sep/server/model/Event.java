@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -19,6 +20,10 @@ public class Event {
     private Long id;
 
     private String name;
+
+    @Column(name = "record_id")
+    private String recordID;
+
     private String location;
 
     @Column(name = "event_date")
@@ -27,6 +32,14 @@ public class Event {
     private String type;
 
     private String description;
+
+    private int attendees;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     @Enumerated(EnumType.STRING)
     private EventStatus status;
@@ -37,4 +50,6 @@ public class Event {
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "budget_id", referencedColumnName = "id", nullable = true)
     private Budget budget;
+
+
 }
