@@ -1,12 +1,9 @@
 package group25.sep.server.model.enums;
 
 public enum EventStatus {
-    PLANNED,
-    ONGOING,
-    COMPLETED,
-    CANCELLED,
-    POSTPONED,
+    PENDING,
+    ACCEPTED,
     REJECTED,
+    BUDGETED,
     APPROVED,
-    PENDING
 }

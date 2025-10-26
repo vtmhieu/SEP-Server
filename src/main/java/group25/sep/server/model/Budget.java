@@ -1,6 +1,5 @@
 package group25.sep.server.model;
 
-import group25.sep.server.model.enums.BudgetStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,14 +21,9 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal amount;
-
-    private String location;
+    private BigDecimal totalAmount;
 
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    private BudgetStatus status;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "budget_id")
