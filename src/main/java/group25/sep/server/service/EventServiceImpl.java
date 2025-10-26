@@ -1,9 +1,12 @@
 package group25.sep.server.service;
 
+import group25.sep.server.dto.EventPatchRequest;
+import group25.sep.server.model.Budget;
 import group25.sep.server.model.Event;
 import group25.sep.server.model.enums.EventStatus;
 import group25.sep.server.repository.EventRepository;
 import org.springframework.stereotype.Service;
+import group25.sep.server.service.BudgetService;
 
 import java.util.List;
 
@@ -11,9 +14,11 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final BudgetService budgetService;
 
-    public EventServiceImpl(EventRepository eventRepository) {
+    public EventServiceImpl(EventRepository eventRepository, BudgetService budgetService) {
         this.eventRepository = eventRepository;
+        this.budgetService = budgetService;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEventsByStatus(String status) {
         try {
             EventStatus eventStatus = EventStatus.valueOf(status.toUpperCase());
-            List<Event> events = eventRepository.findByStatus(eventStatus);
+            List<Event> events = eventRepository.findAllByStatus(eventStatus);
 
             if (events.isEmpty()) {
                 throw new RuntimeException("No events found with status: " + status);
@@ -63,5 +68,26 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
+    }
+
+    @Override
+    public Event updateEventPartial(Long eventId, EventPatchRequest request) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found with id " + eventId));
+
+        if (request.getStatus() != null) {
+            try {
+                event.setStatus(EventStatus.valueOf(request.getStatus().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid event status: " + request.getStatus());
+            }
+        }
+
+        if (request.getBudget() != null) {
+            Budget savedBudget = budgetService.createEventBudget(request.getBudget());
+            event.setBudget(savedBudget);
+        }
+
+        return eventRepository.save(event);
     }
 }

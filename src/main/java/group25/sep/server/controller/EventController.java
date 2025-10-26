@@ -1,6 +1,7 @@
 package group25.sep.server.controller;
 
 import group25.sep.server.model.Event;
+import group25.sep.server.dto.EventPatchRequest;
 import group25.sep.server.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.getEventById(id));
     }
 
-    @GetMapping("/{status}")
+    @GetMapping("/status/{status}")
     public ResponseEntity<List<Event>> getEventsByStatus(@PathVariable String status) {
         return ResponseEntity.ok(eventService.getEventsByStatus(status));
     }
@@ -46,5 +47,11 @@ public class EventController {
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(
+            @PathVariable Long id,
+            @RequestBody EventPatchRequest request) {
+        return ResponseEntity.ok(eventService.updateEventPartial(id, request));
     }
 }
