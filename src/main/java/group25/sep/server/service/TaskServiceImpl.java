@@ -76,6 +76,20 @@ public class TaskServiceImpl implements TaskService{
             throw new RuntimeException("Invalid task status: " + status, e);
         }
     }
+
+    @Override
+    public Task updateTaskComments(Long id, String comments) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+        try {
+            task.setComments(comments);
+            return taskRepository.save(task);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid task comments: " + comments, e);
+        }
+    }
+
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);

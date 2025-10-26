@@ -12,5 +12,6 @@ public interface TaskService {
     List<Task> getTasksBySubteam(String subteam);
     List<Task> getAllTasks();
     Task updateTaskStatus(Long id, String status);
+    Task updateTaskComments(Long id, String comments);
     void deleteTask(Long id);
 }

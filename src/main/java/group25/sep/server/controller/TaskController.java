@@ -47,6 +47,12 @@ public class TaskController {
         Task updatedtask = taskService.updateTaskStatus(id, status);
         return ResponseEntity.ok(updatedtask);
     }
+
+    @PutMapping("/{id}/comments/{comments}")
+    public ResponseEntity<Task> updatetaskComments(@PathVariable Long id, @PathVariable String comments) {
+        Task updatedtask = taskService.updateTaskComments(id, comments);
+        return ResponseEntity.ok(updatedtask);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
