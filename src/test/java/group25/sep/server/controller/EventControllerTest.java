@@ -38,13 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ComponentScan(
-        basePackageClasses = {
-                group25.sep.server.controller.EventController.class,
-                group25.sep.server.service.EventServiceImpl.class,
-                group25.sep.server.repository.EventRepository.class
-        }
-)
 class EventControllerTest {
 
     @Autowired
@@ -376,7 +369,7 @@ class EventControllerTest {
         patch.setBudget(budget);
 
         MvcResult result = mockMvc.perform(
-                        patch("/api/events/" + createdEventId)
+                        patch("/api/events/" + this.createdEventId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(patch)))
                 .andReturn();
@@ -404,7 +397,7 @@ class EventControllerTest {
     }
 
     @Test
-    void deleteEvent_NotFound() throws Exception {
+    void deleteEventNotFound() throws Exception {
         MvcResult result = mockMvc.perform(delete("/api/events/9999"))
                 .andReturn();
 
