@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface RecruitmentRequestRepository extends JpaRepository<RecruitmentRequest, Long> {
 
-//    List<RecruitmentRequest> findByRequestedBySmPmId(Long smPmId);
-
     List<RecruitmentRequest> findByStatus(RecruitmentStatus status);
 
     List<RecruitmentRequest> findByContractType(ContractType contractType);

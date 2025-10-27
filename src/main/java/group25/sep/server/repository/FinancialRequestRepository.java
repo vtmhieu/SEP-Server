@@ -14,8 +14,6 @@ import java.util.List;
 @Repository
 public interface FinancialRequestRepository extends JpaRepository<FinancialRequest, Long> {
 
-//    List<FinancialRequest> findByRequestedBySmPmId(Long smPmId);
-
     List<FinancialRequest> findByStatus(FinancialRequestStatus status);
 
     List<FinancialRequest> findByRequestingDepartment(Department department);
