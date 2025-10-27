@@ -32,12 +32,12 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    @GetMapping("/{status}")
+    @GetMapping("/status/{status}")
     public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
         return ResponseEntity.ok(taskService.getTasksByStatus(status));
     }
 
-    @GetMapping("/{subteam}")
+    @GetMapping("/subteam/{subteam}")
     public ResponseEntity<List<Task>> getTasksBySubteam(@PathVariable String subteam) {
         return ResponseEntity.ok(taskService.getTasksBySubteam(subteam));
     }
