@@ -41,6 +41,8 @@ public class TaskServiceImplTest {
     private Task thirdSavedTask;
     private Task updatedTask;
     private Task updatedComments;
+    private Task missingID;
+    private Task missingPriority;
 
     /**
      * @BeforeEach runs before each test method
@@ -48,7 +50,6 @@ public class TaskServiceImplTest {
      */
     @BeforeEach
     void setUp() {
-        // Create a test recruitment request
         testTask = Task.builder()
                 .eventId(1L)
                 .projectReference("AI Summit")
@@ -60,7 +61,26 @@ public class TaskServiceImplTest {
                 .status(TaskStatus.IN_PROGRESS)
                 .build();
 
-        // Create a saved version with ID (simulating what comes back from database)
+        missingID = Task.builder().eventId(null)
+                .projectReference("AI Summit")
+                .description("Manage the food and make sure it's stocked for the event")
+                .assignee("Mary")
+                .subteam("Food")
+                .comments("Doable, with no budget concerns")
+                .priority(TaskPriority.CRITICAL)
+                .status(TaskStatus.IN_PROGRESS)
+                .build();
+
+        missingPriority = Task.builder().eventId(1L)
+                .projectReference("AI Summit")
+                .description("Manage the food and make sure it's stocked for the event")
+                .assignee("Mary")
+                .subteam("Food")
+                .comments("Doable, with no budget concerns")
+                .priority(null)
+                .status(TaskStatus.IN_PROGRESS)
+                .build();
+
         savedTask = Task.builder()
                 .id(1L)
                 .eventId(1L)
@@ -136,6 +156,24 @@ public class TaskServiceImplTest {
         assertThat(result.getProjectReference()).isEqualTo("AI Summit");
         assertThat(result.getStatus()).isEqualTo(TaskStatus.IN_PROGRESS);
         verify(taskRepository, times(1)).save(testTask);
+    }
+
+    @Test
+    void createTask_WithNoID_ShouldThrowException() {
+        // ACT (
+        assertThrows(RuntimeException.class, () -> taskService.createTask(missingID));
+
+        //ASSERT
+        verify(taskRepository, times(0)).save(any(Task.class));
+    }
+
+     @Test
+    void createTask_WithNoPriority_ShouldThrowException() {
+        // ACT (
+        assertThrows(RuntimeException.class, () -> taskService.createTask(missingPriority));
+
+        //ASSERT
+        verify(taskRepository, times(0)).save(any(Task.class));
     }
 
     @Test void getTaskById_InCaseTaskIdExists_ShouldReturnTask() {
