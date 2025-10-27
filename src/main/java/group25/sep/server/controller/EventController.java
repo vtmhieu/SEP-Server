@@ -30,28 +30,28 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+    public ResponseEntity<Event> getEventById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(eventService.getEventById(id));
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Event>> getEventsByStatus(@PathVariable String status) {
+    public ResponseEntity<List<Event>> getEventsByStatus(@PathVariable("status") String status) {
         return ResponseEntity.ok(eventService.getEventsByStatus(status));
     }
 
     @PutMapping("/{id}/status/{status}")
-    public ResponseEntity<Event> updateEventStatus(@PathVariable Long id, @PathVariable String status) {
+    public ResponseEntity<Event> updateEventStatus(@PathVariable("id") Long id, @PathVariable("status") String status) {
         Event updatedEvent = eventService.updateEventStatus(id, status);
         return ResponseEntity.ok(updatedEvent);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEvent(@PathVariable("id") Long id) {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/{id}")
     public ResponseEntity<Event> updateEvent(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody EventPatchRequest request) {
         return ResponseEntity.ok(eventService.updateEventPartial(id, request));
     }

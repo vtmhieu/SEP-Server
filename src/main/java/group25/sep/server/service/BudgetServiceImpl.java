@@ -21,11 +21,6 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public Budget createBudget(Budget budget) {
-        return budgetRepository.save(budget);
-    }
-
-    @Override
     public Budget getBudgetById(Long id) {
         return budgetRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
