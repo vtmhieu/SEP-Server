@@ -5,8 +5,10 @@ import group25.sep.server.model.Budget;
 import group25.sep.server.model.Event;
 import group25.sep.server.model.enums.EventStatus;
 import group25.sep.server.repository.EventRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import group25.sep.server.service.BudgetService;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,27 +25,33 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event createEvent(Event event) {
+        if (event == null || event.getName() == null || event.getName().trim().isEmpty() || event.getStatus() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Event, event name, and status must not be null or empty"
+            );
+        }
         return eventRepository.save(event);
     }
 
     @Override
     public Event getEventById(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found with id: " + id)
+                );
     }
     @Override
     public List<Event> getEventsByStatus(String status) {
         try {
             EventStatus eventStatus = EventStatus.valueOf(status.toUpperCase());
             List<Event> events = eventRepository.findAllByStatus(eventStatus);
-
-            if (events.isEmpty()) {
-                throw new RuntimeException("No events found with status: " + status);
-            }
-
             return events;
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid event status: " + status, e);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid event status: " + status
+            );
         }
     }
 
@@ -55,31 +63,49 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event updateEventStatus(Long id, String status) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found with id: " + id)
+                );
 
         try {
             EventStatus newStatus = EventStatus.valueOf(status.toUpperCase());
             event.setStatus(newStatus);
             return eventRepository.save(event);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid event status: " + status, e);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid event status: " + status
+            );
         }
     }
+
     @Override
     public void deleteEvent(Long id) {
+        if (!eventRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Event not found with id: " + id
+            );
+        }
         eventRepository.deleteById(id);
     }
+
 
     @Override
     public Event updateEventPartial(Long eventId, EventPatchRequest request) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found with id " + eventId));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found with id: " + eventId)
+                );
 
         if (request.getStatus() != null) {
             try {
                 event.setStatus(EventStatus.valueOf(request.getStatus().toUpperCase()));
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid event status: " + request.getStatus());
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Invalid event status: " + request.getStatus()
+                );
             }
         }
 

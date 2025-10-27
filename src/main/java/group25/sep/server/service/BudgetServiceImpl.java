@@ -3,7 +3,9 @@ package group25.sep.server.service;
 import group25.sep.server.model.Budget;
 import group25.sep.server.model.BudgetItem;
 import group25.sep.server.repository.BudgetRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,7 +28,10 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public Budget getBudgetById(Long id) {
         return budgetRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Budget not found with id " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Budget not found with id: " + id
+                ));
     }
 
     @Override
