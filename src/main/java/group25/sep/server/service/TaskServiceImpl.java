@@ -2,6 +2,7 @@ package group25.sep.server.service;
 
 import group25.sep.server.model.Task;
 import group25.sep.server.model.enums.TaskStatus;
+import group25.sep.server.model.enums.TaskPriority;
 import group25.sep.server.repository.TaskRepository;
 
 import java.util.List;
@@ -19,7 +20,15 @@ public class TaskServiceImpl implements TaskService{
 
      @Override
     public Task createTask(Task task) {
-        return taskRepository.save(task);
+            Long eventId = task.getEventId();
+            TaskPriority taskPriority = task.getPriority();
+            if (eventId == null) {
+                throw new RuntimeException("Event ID Required" + eventId);
+            } else if (taskPriority == null) {
+                throw new RuntimeException("Priority Required" + eventId);
+            }
+            return taskRepository.save(task);
+    
     }
 
     @Override
