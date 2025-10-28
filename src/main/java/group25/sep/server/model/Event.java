@@ -26,9 +26,6 @@ public class Event {
 
     private String location;
 
-    @Column(name = "event_date")
-    private LocalDateTime eventDate;
-
     private String type;
 
     private String description;
