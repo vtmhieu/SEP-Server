@@ -86,6 +86,9 @@ public class FinancialRequestServiceImpl implements FinancialRequestService {
 
     @Override
     public void deleteFinancialRequest(Long id) {
+        financialRequestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Financial request not found with id: " + id));
+
         financialRequestRepository.deleteById(id);
     }
 }

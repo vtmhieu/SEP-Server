@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -93,6 +94,13 @@ class FinancialRequestServiceImplTest {
     @Test
     void testGetAllFinancialRequests() {
         when(repository.findAll()).thenReturn(Arrays.asList(savedRequest));
+
+        List<FinancialRequest> result = service.getAllFinancialRequests();
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(savedRequest.getId());
+
+        verify(repository, times(1)).findAll();
     }
 
     // Test case 4: test retrieval when request doesn't exists
